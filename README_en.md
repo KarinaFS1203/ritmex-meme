@@ -43,7 +43,7 @@ Edit `.env` file to customize:
 ```env
 DEFAULT_SORT=Hot
 DEFAULT_FILTER=all
-REFRESH_INTERVAL=1000
+REFRESH_INTERVAL=2000
 PAGE_SIZE=30
 ```
 
