@@ -1,0 +1,179 @@
+---
+globs: src/core/trading/*,src/config/*
+description: Automatic trading system and blockchain integration for meme token purchases
+---
+
+# Automatic Trading & Blockchain Integration
+
+## Trading Automation System
+
+Implement secure automatic trading functionality for meme token purchases on-chain.
+
+### Core Trading Components
+
+#### 1. Trading Engine
+```typescript
+interface TradingEngine {
+  // Monitor tokens meeting auto-buy criteria
+  monitorTokens(): Promise<void>;
+  
+  // Execute automatic purchases
+  executeTrade(token: TokenData, amount: string): Promise<TradeResult>;
+  
+  // Validate trade conditions
+  validateTrade(token: TokenData): Promise<boolean>;
+  
+  // Risk management
+  checkRiskLimits(): Promise<boolean>;
+}
+```
+
+#### 2. Auto-Buy Criteria
+```typescript
+interface AutoBuyConfig {
+  // Market cap thresholds
+  minMarketCap: number;
+  maxMarketCap: number;
+  
+  // Volume requirements
+  minVolume24h: number;
+  minLiquidity: number;
+  
+  // Price movement filters
+  maxPriceChange24h: number;
+  minPriceChange24h: number;
+  
+  // Network preferences
+  allowedNetworks: string[];
+  
+  // Token age limits
+  maxTokenAge: number; // hours
+  
+  // Progress requirements
+  minProgress: number; // fundraising progress %
+}
+```
+
+### Blockchain Integration
+
+#### 1. Multi-Network Support
+- **BSC (Binance Smart Chain)**: Primary network for meme tokens
+- **Ethereum**: Secondary network support
+- **Other Networks**: Extensible for future networks
+
+#### 2. DEX Integration
+```typescript
+interface DEXClient {
+  // Get token price
+  getTokenPrice(tokenAddress: string): Promise<string>;
+  
+  // Execute swap
+  executeSwap(
+    tokenIn: string,
+    tokenOut: string,
+    amountIn: string,
+    slippage: number
+  ): Promise<TransactionResult>;
+  
+  // Check liquidity
+  getLiquidity(tokenAddress: string): Promise<string>;
+}
+```
+
+#### 3. Wallet Integration
+- **Private Key Management**: Secure storage of wallet credentials
+- **Transaction Signing**: Automated transaction signing
+- **Gas Optimization**: Dynamic gas price calculation
+- **Slippage Protection**: Configurable slippage tolerance
+
+### Risk Management
+
+#### 1. Position Sizing
+```typescript
+interface PositionSizing {
+  // Maximum trade amount per token
+  maxTradeAmount: number;
+  
+  // Maximum total exposure
+  maxTotalExposure: number;
+  
+  // Portfolio percentage limits
+  maxPortfolioPercentage: number;
+  
+  // Stop-loss settings
+  stopLossPercentage: number;
+}
+```
+
+#### 2. Safety Checks
+- **Token Verification**: Verify token contract authenticity
+- **Liquidity Checks**: Ensure sufficient liquidity before trading
+- **Price Impact**: Calculate and limit price impact
+- **Rug Pull Detection**: Basic rug pull indicators
+
+### Trading Workflow
+
+#### 1. Token Discovery
+```typescript
+const discoverTokens = async () => {
+  // Fetch latest tokens from API
+  const tokens = await apiClient.fetchLatestTokens();
+  
+  // Apply auto-buy filters
+  const candidates = tokens.filter(meetsAutoBuyCriteria);
+  
+  // Rank by priority (newest, highest volume, etc.)
+  return rankTokens(candidates);
+};
+```
+
+#### 2. Trade Execution
+```typescript
+const executeAutoTrade = async (token: TokenData) => {
+  try {
+    // Validate trade conditions
+    if (!await validateTrade(token)) return;
+    
+    // Calculate trade amount
+    const amount = calculateTradeAmount(token);
+    
+    // Execute swap on DEX
+    const tx = await dexClient.executeSwap(
+      'BNB', // or ETH
+      token.address,
+      amount,
+      slippageTolerance
+    );
+    
+    // Monitor transaction
+    await monitorTransaction(tx.hash);
+    
+    // Log trade
+    await logTrade(token, amount, tx.hash);
+    
+  } catch (error) {
+    await logTradeError(token, error);
+  }
+};
+```
+
+### Configuration & Monitoring
+
+#### 1. Trading Settings
+- **Auto-trade Toggle**: Enable/disable automatic trading
+- **Trading Hours**: Define active trading periods
+- **Cooldown Periods**: Prevent rapid successive trades
+- **Notification Settings**: Alerts for trades and errors
+
+#### 2. Performance Tracking
+- **Trade History**: Complete log of all trades
+- **P&L Tracking**: Profit/loss calculation
+- **Success Rate**: Track successful vs failed trades
+- **Performance Metrics**: ROI, Sharpe ratio, etc.
+
+### Security Considerations
+- **Private Key Security**: Use encrypted storage for wallet credentials
+- **Transaction Validation**: Double-check all transaction parameters
+- **Rate Limiting**: Prevent excessive API calls
+- **Error Recovery**: Graceful handling of failed transactions
+- **Audit Trail**: Complete logging of all trading activities

@@ -1,0 +1,23 @@
+{
+  "name": "ritmex-meme",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "bun run index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "vitest": "^3.2.4"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "dotenv": "^17.2.3",
+    "ink": "^6.3.1",
+    "ink-table": "^3.1.0",
+    "react": "^19.2.0"
+  }
+}

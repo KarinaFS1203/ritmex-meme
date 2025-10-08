@@ -1,0 +1,68 @@
+---
+globs: src/core/api/*,src/types/*,src/utils/*
+description: API integration and data handling patterns for four.meme token data
+---
+
+# API Integration & Data Handling
+
+## Four.meme API Integration
+
+Based on [fourmeme.md](mdc:docs/fourmeme.md), implement robust API client for four.meme token data.
+
+### API Endpoints
+- **Base URL**: `https://four.meme/meme-api/v1/private/token/query`
+- **Sorting Options**: `Hot`, `TimeDesc`, `OrderDesc`, `ProgressDesc`
+- **Search Parameters**: `tokenName`, `symbol`, `labels`
+- **Pagination**: `pageIndex`, `pageSize`
+
+### Data Types
+```typescript
+interface TokenData {
+  id: number;
+  address: string;
+  name: string;
+  symbol: string;
+  tokenPrice: {
+    price: string;
+    marketCap: string;
+    increase: string;
+    dayIncrease: string;
+    tradingUsd: string;
+    progress: string;
+  };
+  networkCode: string;
+  dexType: string;
+  status: string;
+  launchTime: number;
+  // ... other fields from API response
+}
+```
+
+### API Client Requirements
+1. **Rate Limiting**: Implement proper rate limiting to avoid API bans
+2. **Error Handling**: Graceful handling of API failures with retry logic
+3. **Caching**: Cache responses to reduce API calls and improve performance
+4. **Real-time Updates**: Polling mechanism for live token data updates
+5. **Multiple Networks**: Support BSC, Ethereum, and other networks
+
+### Data Processing
+- **Price Calculations**: Convert string prices to BigNumber for accurate calculations
+- **Market Cap Filtering**: Filter tokens by market cap ranges
+- **Volume Analysis**: Track trading volume and trends
+- **Progress Tracking**: Monitor fundraising progress and completion status
+
+### Error Handling Patterns
+```typescript
+// Always wrap API calls in try-catch with specific error types
+try {
+  const tokens = await apiClient.fetchTokens(params);
+  return processTokenData(tokens);
+} catch (error) {
+  if (error instanceof RateLimitError) {
+    // Implement exponential backoff
+  } else if (error instanceof NetworkError) {
+    // Retry with different endpoint
+  }
+  throw new TokenDataError('Failed to fetch token data', error);
+}
+```

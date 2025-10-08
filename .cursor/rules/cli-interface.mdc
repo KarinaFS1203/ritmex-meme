@@ -1,0 +1,103 @@
+---
+globs: src/ui/*,src/core/filters/*
+description: CLI interface design and user interaction patterns using Ink framework
+---
+
+# CLI Interface & User Interaction
+
+## Ink Framework Guidelines
+
+Build interactive command-line interface using Ink (React for CLI) with [ink-table](mdc:package.json) for data display.
+
+### Core UI Components
+
+#### 1. Main Dashboard
+```typescript
+// Interactive token dashboard with real-time updates
+const TokenDashboard = () => {
+  const [tokens, setTokens] = useState<TokenData[]>([]);
+  const [sortBy, setSortBy] = useState<SortOption>('Hot');
+  const [filter, setFilter] = useState<FilterConfig>({});
+  
+  return (
+    <Box flexDirection="column">
+      <Header />
+      <FilterControls />
+      <TokenTable />
+      <StatusBar />
+    </Box>
+  );
+};
+```
+
+#### 2. Interactive Controls
+- **Sorting**: Hot, TimeDesc, OrderDesc, ProgressDesc
+- **Filtering**: Market cap, volume, network, labels
+- **Search**: Token name, symbol, or custom queries
+- **Auto-refresh**: Configurable refresh intervals
+
+#### 3. Token Table Display
+```typescript
+// Use ink-table for clean token listings
+<Table>
+  <Table.Header>
+    <Table.Cell>Name</Table.Cell>
+    <Table.Cell>Symbol</Table.Cell>
+    <Table.Cell>Price</Table.Cell>
+    <Table.Cell>Market Cap</Table.Cell>
+    <Table.Cell>24h Change</Table.Cell>
+    <Table.Cell>Progress</Table.Cell>
+  </Table.Header>
+  {tokens.map(token => (
+    <Table.Row key={token.id}>
+      {/* Token data cells */}
+    </Table.Row>
+  ))}
+</Table>
+```
+
+### User Interaction Patterns
+
+#### Keyboard Shortcuts
+- `↑/↓`: Navigate table rows
+- `Enter`: Select token for details
+- `s`: Sort options menu
+- `f`: Filter options menu
+- `r`: Refresh data
+- `q`: Quit application
+- `h`: Help menu
+
+#### Command Mode
+```typescript
+// Implement command mode for advanced operations
+const CommandMode = () => {
+  const [command, setCommand] = useState('');
+  
+  const handleCommand = (cmd: string) => {
+    switch (cmd) {
+      case 'sort hot': setSortBy('Hot'); break;
+      case 'filter marketcap > 1000000': applyFilter('marketCap', '>', 1000000); break;
+      case 'search chinese': searchTokens('chinese'); break;
+      case 'auto-trade on': enableAutoTrading(); break;
+    }
+  };
+};
+```
+
+### Real-time Updates
+- **Live Data**: Auto-refresh token prices and market data
+- **Notifications**: Alert for new tokens meeting criteria
+- **Status Indicators**: Visual indicators for auto-trading status
+- **Progress Bars**: Fundraising progress visualization
+
+### Responsive Design
+- **Terminal Size**: Adapt to different terminal dimensions
+- **Scroll Support**: Handle large token lists efficiently
+- **Color Coding**: Use colors for price changes, status, and alerts
+- **Compact Mode**: Option for minimal display
+
+### Error Handling UI
+- **Loading States**: Show loading indicators during API calls
+- **Error Messages**: Clear error messages with retry options
+- **Offline Mode**: Graceful degradation when API unavailable
+- **Connection Status**: Visual connection status indicator

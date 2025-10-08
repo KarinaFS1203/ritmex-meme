@@ -1,0 +1,78 @@
+---
+globs: *.ts,*.tsx,src/**/*.ts
+description: TypeScript coding standards and best practices for the meme token dashboard
+---
+
+# TypeScript Coding Standards
+
+## Code Quality Guidelines
+
+### Type Safety
+- **Strict Mode**: Always use strict TypeScript configuration
+- **Explicit Types**: Define explicit types for all functions and variables
+- **Interface Definitions**: Create comprehensive interfaces for API responses
+- **Generic Types**: Use generics for reusable components and utilities
+
+### Error Handling
+```typescript
+// Always use specific error types
+class TokenDataError extends Error {
+  constructor(message: string, public readonly tokenId?: number) {
+    super(message);
+    this.name = 'TokenDataError';
+  }
+}
+
+// Use Result pattern for operations that can fail
+type Result<T, E = Error> = 
+  | { success: true; data: T }
+  | { success: false; error: E };
+```
+
+### Async/Await Patterns
+```typescript
+// Prefer async/await over Promises
+const fetchTokens = async (): Promise<TokenData[]> => {
+  try {
+    const response = await apiClient.get('/tokens');
+    return response.data;
+  } catch (error) {
+    throw new TokenDataError('Failed to fetch tokens', error);
+  }
+};
+
+// Use Promise.all for parallel operations
+const fetchMultipleTokens = async (ids: number[]): Promise<TokenData[]> => {
+  const promises = ids.map(id => apiClient.getToken(id));
+  return Promise.all(promises);
+};
+```
+
+### Code Organization
+- **Single Responsibility**: Each function should have one clear purpose
+- **Pure Functions**: Prefer pure functions without side effects
+- **Immutable Data**: Use immutable data structures where possible
+- **Dependency Injection**: Use dependency injection for testability
+
+### Performance Considerations
+- **Lazy Loading**: Implement lazy loading for large datasets
+- **Memoization**: Use React.memo and useMemo for expensive calculations
+- **Debouncing**: Debounce user input and API calls
+- **Caching**: Implement intelligent caching for API responses
+
+### Testing Patterns
+```typescript
+// Use descriptive test names
+describe('TokenDataProcessor', () => {
+  it('should filter tokens by market cap range', () => {
+    const tokens = createMockTokens();
+    const filtered = filterByMarketCap(tokens, 1000, 10000);
+    expect(filtered).toHaveLength(2);
+  });
+  
+  it('should handle empty token list gracefully', () => {
+    const result = processTokens([]);
+    expect(result).toEqual([]);
+  });
+});
+```

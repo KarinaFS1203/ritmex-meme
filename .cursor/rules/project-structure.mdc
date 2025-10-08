@@ -1,0 +1,50 @@
+---
+alwaysApply: true
+description: Project structure and architecture guidelines for meme token screening dashboard
+---
+
+# Project Structure Guide
+
+This is a command-line meme token screening dashboard with automatic trading functionality built with Bun, TypeScript, and Ink (React for CLI).
+
+## Core Architecture
+
+The main entry point is [index.ts](mdc:index.ts), which orchestrates the entire application flow.
+
+### Key Components Structure:
+```
+src/
+├── core/           # Core business logic
+│   ├── api/        # API clients and data fetching
+│   ├── trading/    # Trading automation and blockchain integration
+│   └── filters/    # Token filtering and sorting logic
+├── ui/             # CLI interface components using Ink
+│   ├── dashboard/  # Main dashboard screens
+│   ├── tables/     # Token display tables
+│   └── forms/      # Configuration forms
+├── config/         # Configuration management
+├── utils/          # Utility functions
+└── types/          # TypeScript type definitions
+```
+
+## Technology Stack
+- **Runtime**: Bun (not Node.js/npm/pnpm/vite)
+- **Language**: TypeScript with strict typing
+- **CLI Framework**: Ink (React for command line)
+- **Table Display**: ink-table for token listings
+- **Environment**: dotenv for configuration
+- **Testing**: Vitest for unit tests
+
+## Key Features
+1. **Real-time Token Screening**: Fetch and display meme tokens from four.meme API
+2. **Interactive CLI**: Sort, filter, and search tokens via command line
+3. **Auto-trading**: Automatic purchase of tokens meeting criteria
+4. **Configurable Rules**: Environment-based default settings
+5. **Multi-network Support**: BSC, Ethereum, and other networks
+
+## Data Flow
+1. API fetches token data from four.meme
+2. Filters apply user-defined criteria
+3. Dashboard displays sorted/filtered results
+4. Auto-trading monitors for new qualifying tokens
+5. Blockchain integration executes trades

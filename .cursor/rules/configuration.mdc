@@ -1,0 +1,231 @@
+---
+globs: src/config/*,.env*,config/*
+description: Environment configuration and settings management for the meme token dashboard
+---
+
+# Environment Configuration & Settings
+
+## Configuration Management
+
+Implement comprehensive configuration system using [dotenv](mdc:package.json) for environment-based settings.
+
+### Environment Variables Structure
+
+#### 1. API Configuration
+```bash
+# Four.meme API settings
+FOUR_MEME_API_URL=https://four.meme/meme-api/v1/private/token/query
+FOUR_MEME_API_KEY=your_api_key_here
+API_RATE_LIMIT=100
+API_TIMEOUT=30000
+API_RETRY_ATTEMPTS=3
+```
+
+#### 2. Trading Configuration
+```bash
+# Auto-trading settings
+AUTO_TRADE_ENABLED=false
+AUTO_TRADE_MIN_MARKET_CAP=10000
+AUTO_TRADE_MAX_MARKET_CAP=1000000
+AUTO_TRADE_MIN_VOLUME_24H=50000
+AUTO_TRADE_MAX_TRADE_AMOUNT=0.1
+AUTO_TRADE_SLIPPAGE_TOLERANCE=5
+AUTO_TRADE_COOLDOWN_MINUTES=30
+```
+
+#### 3. Wallet Configuration
+```bash
+# Blockchain wallet settings
+WALLET_PRIVATE_KEY=your_private_key_here
+WALLET_ADDRESS=your_wallet_address_here
+NETWORK=BSC
+RPC_URL=https://bsc-dataseed.binance.org/
+GAS_PRICE_GWEI=5
+GAS_LIMIT=300000
+```
+
+#### 4. UI Configuration
+```bash
+# CLI interface settings
+DEFAULT_SORT_BY=Hot
+DEFAULT_PAGE_SIZE=30
+REFRESH_INTERVAL_SECONDS=30
+ENABLE_COLORS=true
+COMPACT_MODE=false
+SHOW_PROGRESS_BARS=true
+```
+
+#### 5. Filter Defaults
+```bash
+# Default filtering criteria
+DEFAULT_MIN_MARKET_CAP=1000
+DEFAULT_MAX_MARKET_CAP=10000000
+DEFAULT_MIN_VOLUME=10000
+DEFAULT_ALLOWED_NETWORKS=BSC,ETH
+DEFAULT_LABELS=Meme
+DEFAULT_MIN_PROGRESS=0.1
+```
+
+### Configuration Classes
+
+#### 1. AppConfig
+```typescript
+interface AppConfig {
+  api: ApiConfig;
+  trading: TradingConfig;
+  wallet: WalletConfig;
+  ui: UIConfig;
+  filters: FilterConfig;
+}
+
+class ConfigManager {
+  private config: AppConfig;
+  
+  constructor() {
+    this.loadFromEnv();
+    this.validateConfig();
+  }
+  
+  private loadFromEnv(): void {
+    this.config = {
+      api: {
+        baseUrl: process.env.FOUR_MEME_API_URL!,
+        apiKey: process.env.FOUR_MEME_API_KEY,
+        rateLimit: parseInt(process.env.API_RATE_LIMIT || '100'),
+        timeout: parseInt(process.env.API_TIMEOUT || '30000'),
+        retryAttempts: parseInt(process.env.API_RETRY_ATTEMPTS || '3')
+      },
+      trading: {
+        enabled: process.env.AUTO_TRADE_ENABLED === 'true',
+        minMarketCap: parseFloat(process.env.AUTO_TRADE_MIN_MARKET_CAP || '10000'),
+        maxMarketCap: parseFloat(process.env.AUTO_TRADE_MAX_MARKET_CAP || '1000000'),
+        minVolume24h: parseFloat(process.env.AUTO_TRADE_MIN_VOLUME_24H || '50000'),
+        maxTradeAmount: parseFloat(process.env.AUTO_TRADE_MAX_TRADE_AMOUNT || '0.1'),
+        slippageTolerance: parseFloat(process.env.AUTO_TRADE_SLIPPAGE_TOLERANCE || '5'),
+        cooldownMinutes: parseInt(process.env.AUTO_TRADE_COOLDOWN_MINUTES || '30')
+      },
+      // ... other config sections
+    };
+  }
+}
+```
+
+### Configuration Validation
+
+#### 1. Required Fields
+```typescript
+const validateRequiredFields = (config: AppConfig): void => {
+  const required = [
+    'config.api.baseUrl',
+    'config.wallet.privateKey',
+    'config.wallet.address'
+  ];
+  
+  required.forEach(field => {
+    if (!getNestedValue(config, field)) {
+      throw new ConfigError(`Required field missing: ${field}`);
+    }
+  });
+};
+```
+
+#### 2. Value Ranges
+```typescript
+const validateRanges = (config: AppConfig): void => {
+  // Market cap validation
+  if (config.trading.minMarketCap >= config.trading.maxMarketCap) {
+    throw new ConfigError('Min market cap must be less than max market cap');
+  }
+  
+  // Slippage validation
+  if (config.trading.slippageTolerance < 0 || config.trading.slippageTolerance > 50) {
+    throw new ConfigError('Slippage tolerance must be between 0 and 50');
+  }
+  
+  // Gas price validation
+  if (config.wallet.gasPriceGwei < 1 || config.wallet.gasPriceGwei > 100) {
+    throw new ConfigError('Gas price must be between 1 and 100 Gwei');
+  }
+};
+```
+
+### Configuration Files
+
+#### 1. .env.example
+```bash
+# Copy this file to .env and fill in your values
+
+# API Configuration
+FOUR_MEME_API_URL=https://four.meme/meme-api/v1/private/token/query
+FOUR_MEME_API_KEY=
+
+# Trading Configuration
+AUTO_TRADE_ENABLED=false
+AUTO_TRADE_MIN_MARKET_CAP=10000
+AUTO_TRADE_MAX_MARKET_CAP=1000000
+AUTO_TRADE_MIN_VOLUME_24H=50000
+AUTO_TRADE_MAX_TRADE_AMOUNT=0.1
+AUTO_TRADE_SLIPPAGE_TOLERANCE=5
+
+# Wallet Configuration
+WALLET_PRIVATE_KEY=
+WALLET_ADDRESS=
+NETWORK=BSC
+RPC_URL=https://bsc-dataseed.binance.org/
+
+# UI Configuration
+DEFAULT_SORT_BY=Hot
+DEFAULT_PAGE_SIZE=30
+REFRESH_INTERVAL_SECONDS=30
+```
+
+#### 2. config/defaults.json
+```json
+{
+  "api": {
+    "rateLimit": 100,
+    "timeout": 30000,
+    "retryAttempts": 3
+  },
+  "trading": {
+    "cooldownMinutes": 30,
+    "maxTradeAmount": 0.1,
+    "slippageTolerance": 5
+  },
+  "ui": {
+    "enableColors": true,
+    "compactMode": false,
+    "showProgressBars": true
+  }
+}
+```
+
+### Runtime Configuration Updates
+
+#### 1. Hot Reload
+```typescript
+// Watch for .env file changes
+const watchConfig = () => {
+  fs.watchFile('.env', () => {
+    console.log('Configuration updated, reloading...');
+    configManager.reload();
+  });
+};
+```
+
+#### 2. CLI Configuration Commands
+```typescript
+// Interactive configuration updates
+const updateConfig = async (key: string, value: any) => {
+  await configManager.update(key, value);
+  await configManager.save();
+  console.log(`Updated ${key} to ${value}`);
+};
+```
+
+### Security Considerations
+- **Sensitive Data**: Never log private keys or sensitive configuration
+- **File Permissions**: Restrict .env file permissions (600)
+- **Validation**: Always validate configuration values before use
+- **Defaults**: Provide safe defaults for all configuration options
+- **Documentation**: Document all configuration options with examples
