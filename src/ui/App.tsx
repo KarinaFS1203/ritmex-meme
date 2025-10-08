@@ -193,7 +193,7 @@ export const App: React.FC = () => {
       {eventLog.length > 0 && (
         <Box flexDirection="column" marginTop={1}>
           <Text bold color="green">新币发现 (共 {eventLog.length}):</Text>
-          {[...eventLog].slice().reverse().map((e, idx) => (
+          {[...eventLog].slice(-20).reverse().map((e, idx) => (
             <Text key={`${abbreviateAddress(e.token.address)}-${e.timestamp}-${idx}`} color="green">[{formatTimestamp(e.timestamp)}] {e.token.name} ({e.token.symbol}) {e.token.address} → 交易: {tradeUrl(e.token.address)}</Text>
           ))}
         </Box>
