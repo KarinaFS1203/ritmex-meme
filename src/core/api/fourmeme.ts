@@ -67,8 +67,11 @@ export class FourMemeAPI {
         break;
     }
 
+    // When any filter is active (not 'all'), force orderBy to 'Query'
+    const effectiveOrderBy = filterMode !== 'all' ? 'Query' : sortMode;
+
     return this.fetchTokens({
-      orderBy: sortMode,
+      orderBy: effectiveOrderBy,
       tokenName,
       pageIndex: 1,
       pageSize
