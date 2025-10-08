@@ -106,3 +106,18 @@ export function formatTimestamp(timestamp: number): string {
     second: '2-digit'
   });
 }
+
+export function abbreviateAddress(address: string, visible: number = 4): string {
+  const input = (address ?? '').trim();
+  if (input.length === 0) return '';
+
+  const hasPrefix = input.startsWith('0x');
+  const prefix = hasPrefix ? '0x' : '';
+  const body = hasPrefix ? input.slice(2) : input;
+
+  if (body.length <= visible * 2) return input;
+
+  const start = body.slice(0, visible);
+  const end = body.slice(-visible);
+  return `${prefix}${start}...${end}`;
+}

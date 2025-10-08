@@ -7,7 +7,7 @@ import { FourMemeAPI } from '../core/api/fourmeme';
 import type { TokenData, NewTokenEvent } from '../types';
 import { appConfig } from '../config/config';
 import { loadSeenAddresses, saveSeenAddresses, loadNewTokenLog, appendNewTokenEvents, clearNewTokenLog } from '../utils/storage';
-import { formatTimestamp } from '../utils/formatter';
+import { abbreviateAddress, formatTimestamp } from '../utils/formatter';
 
 export const App: React.FC = () => {
   // State management
@@ -194,7 +194,7 @@ export const App: React.FC = () => {
         <Box flexDirection="column" marginTop={1}>
           <Text bold color="green">新币发现 (共 {eventLog.length}):</Text>
           {[...eventLog].slice().reverse().map((e, idx) => (
-            <Text key={`${e.token.address}-${e.timestamp}-${idx}`} color="green">[{formatTimestamp(e.timestamp)}] {e.token.name} ({e.token.symbol}) {e.token.address} → 交易: {tradeUrl(e.token.address)}</Text>
+            <Text key={`${abbreviateAddress(e.token.address)}-${e.timestamp}-${idx}`} color="green">[{formatTimestamp(e.timestamp)}] {e.token.name} ({e.token.symbol}) {e.token.address} → 交易: {tradeUrl(e.token.address)}</Text>
           ))}
         </Box>
       )}
