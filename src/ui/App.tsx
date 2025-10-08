@@ -22,6 +22,7 @@ export const App: React.FC = () => {
   const [seen, setSeen] = useState<Set<string>>(new Set());
   const [newEvents, setNewEvents] = useState<NewTokenEvent[]>([]);
   const [eventLog, setEventLog] = useState<NewTokenEvent[]>([]);
+  const [skipNewDetectionOnce, setSkipNewDetectionOnce] = useState(false);
 
   // API instance
   const api = new FourMemeAPI();
@@ -52,8 +53,8 @@ export const App: React.FC = () => {
       const lowerSeen = new Set(Array.from(seen).map(a => a.toLowerCase()));
       const updatedSeen = new Set(lowerSeen);
 
-      // Special handling: initial load should NOT mark tokens as new
-      if (!hasLoadedOnce) {
+      // Special handling: initial load OR first fetch after sort/filter change should NOT mark tokens as new
+      if (!hasLoadedOnce || skipNewDetectionOnce) {
         const markedInitial = fresh.map(t => {
           const addr = (t.address || '').toLowerCase();
           if (addr) updatedSeen.add(addr);
@@ -68,6 +69,7 @@ export const App: React.FC = () => {
         setNewEvents([]);
         setLastUpdate(Date.now());
         setHasLoadedOnce(true);
+        if (skipNewDetectionOnce) setSkipNewDetectionOnce(false);
         return;
       }
 
@@ -102,7 +104,7 @@ export const App: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [sortMode, filterMode, seen]);
+  }, [sortMode, filterMode, seen, hasLoadedOnce, skipNewDetectionOnce]);
 
   // Keyboard navigation
   const handleKeyPress = useCallback((input: string, key: any) => {
@@ -145,9 +147,11 @@ export const App: React.FC = () => {
     if (key.return) {
       if (selectedSort !== sortMode) {
         setSortMode(selectedSort);
+        setSkipNewDetectionOnce(true);
       }
       if (selectedFilter !== filterMode) {
         setFilterMode(selectedFilter);
+        setSkipNewDetectionOnce(true);
       }
       return;
     }
